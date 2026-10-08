@@ -32,6 +32,7 @@ the caption.
 | `planting`                | Planting             |
 | `irrigation`              | Irrigation           |
 | `maintenance`             | Maintenance          |
+| `outdoor-kitchen`         | Outdoor Kitchen      |
 
 Any other tag works too — it just gets title-cased. For example
 `06-pool-landscaping--damac-hills-villa.jpg` creates a "Pool Landscaping" filter.

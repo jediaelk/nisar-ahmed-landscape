@@ -24,6 +24,7 @@ const tagLabels: Record<string, string> = {
   planting: "Planting",
   irrigation: "Irrigation",
   maintenance: "Maintenance",
+  "outdoor-kitchen": "Outdoor Kitchen",
 };
 
 const titleCase = (slug: string) =>

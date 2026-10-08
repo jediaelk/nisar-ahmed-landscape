@@ -15,3 +15,7 @@ node_modules/
 !.vscode/extensions.json
 *.log
 npm-debug.log*
+
+# Staging area for incoming photo drops (contents are not committed)
+inbox/*
+!inbox/README.txt
