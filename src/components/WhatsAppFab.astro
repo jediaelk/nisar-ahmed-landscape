@@ -3,14 +3,40 @@ import Icon from "./Icon.astro";
 import { site } from "../data/site";
 ---
 
-<!-- Always-visible WhatsApp shortcut. Expands to a label on hover. -->
+<!--
+  Persistent WhatsApp shortcut. Stays hidden over the hero so it doesn't
+  compete with the hero's own CTA, then fades in once the hero scrolls away.
+-->
 <a
+  id="whatsapp-fab"
   href={site.whatsapp.link}
   target="_blank"
   rel="noopener noreferrer"
-  class="group fixed right-5 bottom-5 z-40 flex items-center gap-3 rounded-full bg-whatsapp py-4 pr-5 pl-4 font-semibold text-forest-900 shadow-2xl shadow-forest-900/25 transition-transform hover:scale-105 sm:right-7 sm:bottom-7"
+  class="fixed right-5 bottom-5 z-40 flex translate-y-4 items-center gap-3 rounded-full bg-whatsapp py-4 pr-5 pl-4 font-semibold text-forest-900 opacity-0 shadow-2xl shadow-forest-900/25 transition-all duration-300 data-[visible=true]:translate-y-0 data-[visible=true]:opacity-100 sm:right-7 sm:bottom-7"
+  aria-hidden="true"
+  tabindex="-1"
   aria-label={`Message ${site.shortName} on WhatsApp`}
 >
   <Icon name="whatsapp" class="h-7 w-7" />
   <span class="hidden text-sm sm:inline">WhatsApp us</span>
 </a>
+
+<script>
+  const fab = document.getElementById("whatsapp-fab");
+  const hero = document.getElementById("top");
+
+  if (fab && hero) {
+    const setVisible = (visible: boolean) => {
+      fab.dataset.visible = String(visible);
+      // Keep it out of the tab order and off the a11y tree while hidden.
+      fab.setAttribute("aria-hidden", String(!visible));
+      fab.tabIndex = visible ? 0 : -1;
+    };
+
+    const observer = new IntersectionObserver(
+      ([entry]) => setVisible(!entry.isIntersecting),
+      { threshold: 0 }
+    );
+    observer.observe(hero);
+  }
+</script>

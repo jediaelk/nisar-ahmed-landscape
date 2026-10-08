@@ -42,9 +42,18 @@ const links = [
       }
     </nav>
 
-    <div class="hidden lg:block">
-      <WhatsAppButton label="Get a free quote" class="px-5 py-3" />
-    </div>
+    <!--
+      Deliberately the phone, not WhatsApp. The hero already carries the
+      WhatsApp CTA, and the floating button takes over once the hero scrolls
+      away — so the header offers the other channel instead of a third copy.
+    -->
+    <a
+      href={site.phone.tel}
+      class="hidden items-center gap-2.5 rounded-full border border-white/25 px-5 py-3 text-sm font-semibold text-white transition-colors hover:bg-white/10 lg:inline-flex"
+    >
+      <Icon name="phone" class="h-4 w-4 text-leaf-400" />
+      {site.phone.display}
+    </a>
 
     <button
       id="menu-toggle"
