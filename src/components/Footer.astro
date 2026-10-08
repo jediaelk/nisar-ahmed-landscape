@@ -1,0 +1,67 @@
+---
+import Icon from "./Icon.astro";
+import WhatsAppButton from "./WhatsAppButton.astro";
+import { site, services } from "../data/site";
+
+const year = new Date().getFullYear();
+---
+
+<footer id="contact" class="bg-forest-900 pt-20 pb-10 text-forest-100">
+  <div class="mx-auto max-w-7xl px-5 lg:px-8">
+    <div class="grid gap-12 lg:grid-cols-[1.3fr_1fr_1fr]">
+      <div>
+        <div class="flex items-center gap-2.5 text-white">
+          <span class="grid h-10 w-10 place-items-center rounded-full bg-leaf-500">
+            <Icon name="leaf" class="h-5 w-5" />
+          </span>
+          <span class="font-display text-lg leading-tight font-semibold">
+            Nisar Ahmed
+            <span class="block text-[0.6rem] font-sans font-medium tracking-[0.18em] text-forest-100 uppercase">
+              Landscape & Gardening
+            </span>
+          </span>
+        </div>
+        <p class="mt-5 max-w-sm text-sm leading-relaxed text-forest-100/80">
+          Garden design, landscaping and maintenance for villas and townhouses across Dubai.
+        </p>
+        <WhatsAppButton label="Message us on WhatsApp" class="mt-7" />
+      </div>
+
+      <div>
+        <h3 class="text-xs font-semibold tracking-[0.18em] text-white uppercase">Services</h3>
+        <ul class="mt-5 space-y-3 text-sm text-forest-100/80">
+          {services.map((service) => <li>{service.title}</li>)}
+        </ul>
+      </div>
+
+      <div>
+        <h3 class="text-xs font-semibold tracking-[0.18em] text-white uppercase">Contact</h3>
+        <ul class="mt-5 space-y-4 text-sm">
+          <li>
+            <a href={site.phone.tel} class="flex items-start gap-3 transition-colors hover:text-white">
+              <Icon name="phone" class="mt-0.5 h-4 w-4 shrink-0 text-leaf-400" />
+              {site.phone.display}
+            </a>
+          </li>
+          <li class="flex items-start gap-3 text-forest-100/80">
+            <Icon name="pin" class="mt-0.5 h-4 w-4 shrink-0 text-leaf-400" />
+            {site.city}, {site.country}
+          </li>
+          <li class="flex items-start gap-3 text-forest-100/80">
+            <Icon name="clock" class="mt-0.5 h-4 w-4 shrink-0 text-leaf-400" />
+            {site.hours}
+          </li>
+        </ul>
+
+        <h3 class="mt-8 text-xs font-semibold tracking-[0.18em] text-white uppercase">Areas we serve</h3>
+        <p class="mt-4 text-sm leading-relaxed text-forest-100/80">
+          {site.serviceAreas.join(" · ")} and the rest of Dubai.
+        </p>
+      </div>
+    </div>
+
+    <div class="mt-14 border-t border-white/10 pt-7 text-xs text-forest-100/60">
+      <p>&copy; {year} {site.name}. All rights reserved.</p>
+    </div>
+  </div>
+</footer>

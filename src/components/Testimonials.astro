@@ -1,0 +1,37 @@
+---
+import { testimonials } from "../data/site";
+---
+
+<section id="testimonials" class="bg-sand-100 py-20 lg:py-28">
+  <div class="mx-auto max-w-7xl px-5 lg:px-8">
+    <div class="reveal mx-auto max-w-2xl text-center">
+      <p class="text-xs font-semibold tracking-[0.18em] text-leaf-500 uppercase">Testimonials</p>
+      <h2 class="mt-4 font-display text-3xl leading-tight font-semibold sm:text-4xl lg:text-[2.75rem]">
+        What our clients say
+      </h2>
+    </div>
+
+    <div class="mt-14 grid gap-6 lg:grid-cols-3">
+      {
+        testimonials.map((item) => (
+          <figure class="reveal flex h-full flex-col rounded-2xl bg-white p-7 shadow-sm ring-1 ring-black/5">
+            <div class="flex gap-1 text-leaf-500" aria-label="Five out of five stars">
+              {Array.from({ length: 5 }).map(() => (
+                <svg viewBox="0 0 20 20" fill="currentColor" class="h-4 w-4" aria-hidden="true">
+                  <path d="M10 1.5l2.6 5.3 5.9.9-4.25 4.1 1 5.8L10 14.9l-5.25 2.7 1-5.8L1.5 7.7l5.9-.9L10 1.5Z" />
+                </svg>
+              ))}
+            </div>
+            <blockquote class="mt-5 grow text-sm leading-relaxed text-forest-800">
+              “{item.quote}”
+            </blockquote>
+            <figcaption class="mt-6 border-t border-sand-200 pt-5 text-xs leading-tight">
+              <span class="block font-semibold">{item.name}</span>
+              <span class="text-forest-600">{item.location}</span>
+            </figcaption>
+          </figure>
+        ))
+      }
+    </div>
+  </div>
+</section>

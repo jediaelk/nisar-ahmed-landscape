@@ -1,0 +1,105 @@
+---
+import Icon from "./Icon.astro";
+import WhatsAppButton from "./WhatsAppButton.astro";
+import { site } from "../data/site";
+
+const links = [
+  { label: "Services", href: "#services" },
+  { label: "Our Work", href: "#work" },
+  { label: "Why Us", href: "#why-us" },
+  { label: "How It Works", href: "#process" },
+  { label: "Contact", href: "#contact" },
+];
+---
+
+<header
+  id="site-header"
+  class="fixed inset-x-0 top-0 z-40 transition-all duration-300 data-[scrolled=true]:bg-forest-900/95 data-[scrolled=true]:shadow-lg data-[scrolled=true]:backdrop-blur"
+>
+  <div class="mx-auto flex max-w-7xl items-center justify-between gap-6 px-5 py-4 lg:px-8">
+    <a href="#top" class="flex items-center gap-2.5 text-white">
+      <span class="grid h-9 w-9 place-items-center rounded-full bg-leaf-500 text-white">
+        <Icon name="leaf" class="h-5 w-5" />
+      </span>
+      <span class="font-display text-base leading-tight font-semibold tracking-tight">
+        Nisar Ahmed
+        <span class="block text-[0.6rem] font-sans font-medium tracking-[0.18em] text-forest-100 uppercase">
+          Landscape & Gardening
+        </span>
+      </span>
+    </a>
+
+    <nav class="hidden items-center gap-8 lg:flex">
+      {
+        links.map((link) => (
+          <a
+            href={link.href}
+            class="text-sm font-medium text-forest-100 transition-colors hover:text-white"
+          >
+            {link.label}
+          </a>
+        ))
+      }
+    </nav>
+
+    <div class="hidden lg:block">
+      <WhatsAppButton label="Get a free quote" class="px-5 py-3" />
+    </div>
+
+    <button
+      id="menu-toggle"
+      type="button"
+      aria-expanded="false"
+      aria-controls="mobile-menu"
+      class="grid h-11 w-11 place-items-center rounded-full border border-white/25 text-white lg:hidden"
+    >
+      <span class="sr-only">Toggle navigation</span>
+      <Icon name="menu" class="h-6 w-6" id="menu-open-icon" />
+    </button>
+  </div>
+
+  <div id="mobile-menu" class="hidden border-t border-white/10 bg-forest-900 lg:hidden">
+    <nav class="mx-auto flex max-w-7xl flex-col px-5 py-3">
+      {
+        links.map((link) => (
+          <a
+            href={link.href}
+            class="border-b border-white/5 py-3.5 text-sm font-medium text-forest-100 last:border-0"
+          >
+            {link.label}
+          </a>
+        ))
+      }
+      <div class="py-4">
+        <WhatsAppButton label="Get a free quote" class="w-full" />
+      </div>
+    </nav>
+  </div>
+</header>
+
+<script>
+  const header = document.getElementById("site-header")!;
+  const toggle = document.getElementById("menu-toggle")!;
+  const menu = document.getElementById("mobile-menu")!;
+
+  // Solid background once the hero has scrolled past.
+  const onScroll = () => {
+    header.dataset.scrolled = String(window.scrollY > 24);
+  };
+  onScroll();
+  window.addEventListener("scroll", onScroll, { passive: true });
+
+  const setMenu = (open: boolean) => {
+    menu.classList.toggle("hidden", !open);
+    toggle.setAttribute("aria-expanded", String(open));
+  };
+
+  toggle.addEventListener("click", () => {
+    setMenu(menu.classList.contains("hidden"));
+  });
+
+  // Close after tapping a link so the anchor scroll is visible.
+  menu.querySelectorAll("a").forEach((link) => {
+    link.addEventListener("click", () => setMenu(false));
+  });
+</script>

@@ -1,0 +1,90 @@
+---
+import { Image } from "astro:assets";
+import Icon from "./Icon.astro";
+import WhatsAppButton from "./WhatsAppButton.astro";
+import { site } from "../data/site";
+import heroImage from "../images/site/hero.jpg";
+
+const highlights = ["Free site visit & quote", "Workmanship guaranteed", "Serving all of Dubai"];
+---
+
+<section id="top" class="relative min-h-[46rem] overflow-hidden lg:min-h-[44rem]">
+  <Image
+    src={heroImage}
+    alt="A freshly laid artificial grass lawn beside a modern Dubai villa"
+    widths={[768, 1280, 1920]}
+    sizes="100vw"
+    quality={80}
+    loading="eager"
+    class="absolute inset-0 h-full w-full object-cover object-center"
+  />
+  <div class="absolute inset-0 bg-gradient-to-br from-forest-900/92 via-forest-900/70 to-forest-800/45"></div>
+
+  <div class="relative mx-auto flex min-h-[46rem] max-w-7xl flex-col justify-center px-5 pt-28 pb-16 lg:min-h-[44rem] lg:px-8">
+    <div class="grid items-center gap-12 lg:grid-cols-[1.15fr_0.85fr]">
+      <div class="max-w-2xl">
+        <p class="inline-flex items-center gap-2 rounded-full bg-white/10 px-4 py-1.5 text-xs font-semibold tracking-[0.16em] text-forest-100 uppercase ring-1 ring-white/15">
+          <Icon name="pin" class="h-4 w-4" />
+          {site.city}, {site.country}
+        </p>
+
+        <h1 class="mt-6 font-display text-4xl leading-[1.08] font-semibold text-white sm:text-5xl lg:text-6xl">
+          Let us bring life
+          <span class="block text-leaf-400">to your garden</span>
+        </h1>
+
+        <p class="mt-6 max-w-xl text-base leading-relaxed text-forest-100 sm:text-lg">
+          Artificial grass, pergolas, paving, planting and irrigation — designed, installed and
+          maintained by a team that has been looking after Dubai gardens for over ten years.
+        </p>
+
+        <div class="mt-9 flex flex-wrap items-center gap-3">
+          <WhatsAppButton label="Get a free quote" class="px-7 py-4 text-base" />
+          <a
+            href="#work"
+            class="inline-flex items-center gap-2 rounded-full border border-white/25 px-7 py-4 text-sm font-semibold text-white transition-all hover:-translate-y-0.5 hover:bg-white/10"
+          >
+            See our work
+            <Icon name="arrow" class="h-4 w-4" />
+          </a>
+        </div>
+
+        <ul class="mt-10 flex flex-wrap gap-x-7 gap-y-3">
+          {
+            highlights.map((item) => (
+              <li class="flex items-center gap-2 text-sm font-medium text-forest-100">
+                <Icon name="check" class="h-4 w-4 text-leaf-400" />
+                {item}
+              </li>
+            ))
+          }
+        </ul>
+      </div>
+
+      <!-- Contact card: the quickest route to a conversation -->
+      <div class="rounded-3xl bg-white/95 p-7 shadow-2xl ring-1 ring-black/5 backdrop-blur sm:p-8">
+        <h2 class="font-display text-2xl font-semibold">Book your free site visit</h2>
+        <p class="mt-3 text-sm leading-relaxed text-forest-700">
+          Send us a WhatsApp message with a couple of photos of your garden and we will come back
+          to you with an honest, itemised quote.
+        </p>
+
+        <div class="mt-6 space-y-3">
+          <WhatsAppButton label="Message us on WhatsApp" class="w-full py-4 text-base" />
+          <a
+            href={site.phone.tel}
+            class="flex w-full items-center justify-center gap-2.5 rounded-full border border-forest-200 px-6 py-4 text-sm font-semibold text-forest-900 transition-colors hover:border-forest-400 hover:bg-forest-50"
+          >
+            <Icon name="phone" class="h-5 w-5 text-leaf-500" />
+            {site.phone.display}
+          </a>
+        </div>
+
+        <p class="mt-6 flex items-start gap-2.5 border-t border-sand-200 pt-5 text-xs leading-relaxed text-forest-600">
+          <Icon name="clock" class="mt-px h-4 w-4 shrink-0 text-leaf-500" />
+          {site.hours}
+        </p>
+      </div>
+    </div>
+  </div>
+</section>

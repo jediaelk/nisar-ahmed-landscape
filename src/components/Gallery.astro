@@ -1,0 +1,165 @@
+---
+import { Image, getImage } from "astro:assets";
+import Icon from "./Icon.astro";
+import WhatsAppButton from "./WhatsAppButton.astro";
+import { galleryItems, galleryTags } from "../data/gallery";
+
+// A larger render of each photo, used by the lightbox.
+const items = await Promise.all(
+  galleryItems.map(async (item) => ({
+    ...item,
+    full: (await getImage({ src: item.image, width: 1600, quality: 82, format: "webp" })).src,
+  }))
+);
+
+const filters = galleryTags.length > 1 ? ["All", ...galleryTags] : [];
+---
+
+<section id="work" class="py-20 lg:py-28">
+  <div class="mx-auto max-w-7xl px-5 lg:px-8">
+    <div class="reveal mx-auto max-w-2xl text-center">
+      <p class="text-xs font-semibold tracking-[0.18em] text-leaf-500 uppercase">Our Work</p>
+      <h2 class="mt-4 font-display text-3xl leading-tight font-semibold sm:text-4xl lg:text-[2.75rem]">
+        Recent projects around Dubai
+      </h2>
+      <p class="mt-5 text-base leading-relaxed text-forest-700">
+        Real gardens, real villas, photographed on handover day. Tap any photo to see it full size.
+      </p>
+    </div>
+
+    {
+      filters.length > 0 && (
+        <div class="reveal mt-10 flex flex-wrap justify-center gap-2.5" id="gallery-filters">
+          {filters.map((filter, index) => (
+            <button
+              type="button"
+              data-filter={filter}
+              aria-pressed={index === 0 ? "true" : "false"}
+              class="rounded-full border border-forest-200 px-5 py-2.5 text-sm font-medium text-forest-700 transition-colors hover:border-forest-400 aria-pressed:border-forest-900 aria-pressed:bg-forest-900 aria-pressed:text-white"
+            >
+              {filter}
+            </button>
+          ))}
+        </div>
+      )
+    }
+
+    {
+      items.length === 0 ? (
+        <p class="mt-12 rounded-2xl border border-dashed border-forest-200 bg-sand-100 p-12 text-center text-sm text-forest-600">
+          No photos yet — drop images into <code class="font-semibold">src/images/gallery/</code> and
+          they will show up here.
+        </p>
+      ) : (
+        <div class="mt-12 grid gap-5 sm:grid-cols-2 lg:grid-cols-3" id="gallery-grid">
+          {items.map((item, index) => (
+            <button
+              type="button"
+              data-tag={item.tag}
+              data-full={item.full}
+              data-caption={item.caption}
+              class="reveal group relative block aspect-4/3 overflow-hidden rounded-2xl bg-forest-800 text-left ring-1 ring-black/5"
+            >
+              <Image
+                src={item.image}
+                alt={`${item.tag} — ${item.caption}`}
+                widths={[400, 700, 1000]}
+                sizes="(min-width: 1024px) 30vw, (min-width: 640px) 45vw, 92vw"
+                quality={78}
+                loading={index < 3 ? "eager" : "lazy"}
+                class="h-full w-full object-cover transition-transform duration-500 group-hover:scale-[1.06]"
+              />
+              <span class="absolute inset-0 bg-gradient-to-t from-forest-900/85 via-forest-900/10 to-transparent opacity-80 transition-opacity group-hover:opacity-95" />
+              <span class="absolute inset-x-0 bottom-0 p-5">
+                <span class="block text-[0.65rem] font-semibold tracking-[0.16em] text-leaf-400 uppercase">
+                  {item.tag}
+                </span>
+                <span class="mt-1 block font-display text-lg font-semibold text-white">
+                  {item.caption}
+                </span>
+              </span>
+            </button>
+          ))}
+        </div>
+      )
+    }
+
+    <div class="reveal mt-12 text-center">
+      <p class="text-sm text-forest-700">Want something similar for your garden?</p>
+      <WhatsAppButton label="Send us your photos" variant="leaf" class="mt-4" />
+    </div>
+  </div>
+</section>
+
+<!-- Lightbox -->
+<div
+  id="lightbox"
+  class="fixed inset-0 z-50 hidden items-center justify-center bg-forest-900/95 p-4 backdrop-blur"
+  role="dialog"
+  aria-modal="true"
+  aria-label="Project photo"
+>
+  <button
+    type="button"
+    id="lightbox-close"
+    class="absolute top-5 right-5 grid h-11 w-11 place-items-center rounded-full bg-white/10 text-white transition-colors hover:bg-white/20"
+  >
+    <span class="sr-only">Close</span>
+    <Icon name="close" class="h-6 w-6" />
+  </button>
+  <figure class="max-h-full w-full max-w-5xl text-center">
+    <img id="lightbox-image" src="" alt="" class="mx-auto max-h-[80vh] w-auto rounded-2xl object-contain" />
+    <figcaption id="lightbox-caption" class="mt-4 text-sm font-medium text-forest-100"></figcaption>
+  </figure>
+</div>
+
+<script>
+  const grid = document.getElementById("gallery-grid");
+  const filters = document.getElementById("gallery-filters");
+  const lightbox = document.getElementById("lightbox");
+  const lightboxImage = document.getElementById("lightbox-image") as HTMLImageElement | null;
+  const lightboxCaption = document.getElementById("lightbox-caption");
+  const closeButton = document.getElementById("lightbox-close");
+
+  const tiles = Array.from(grid?.querySelectorAll<HTMLButtonElement>("[data-full]") ?? []);
+
+  filters?.addEventListener("click", (event) => {
+    const button = (event.target as HTMLElement).closest<HTMLButtonElement>("[data-filter]");
+    if (!button) return;
+
+    filters.querySelectorAll("[data-filter]").forEach((item) => {
+      item.setAttribute("aria-pressed", String(item === button));
+    });
+
+    const wanted = button.dataset.filter;
+    tiles.forEach((tile) => {
+      tile.classList.toggle("hidden", wanted !== "All" && tile.dataset.tag !== wanted);
+    });
+  });
+
+  const closeLightbox = () => {
+    lightbox?.classList.add("hidden");
+    lightbox?.classList.remove("flex");
+    document.body.style.overflow = "";
+  };
+
+  tiles.forEach((tile) => {
+    tile.addEventListener("click", () => {
+      if (!lightbox || !lightboxImage || !lightboxCaption) return;
+      lightboxImage.src = tile.dataset.full ?? "";
+      lightboxImage.alt = tile.dataset.caption ?? "";
+      lightboxCaption.textContent = tile.dataset.caption ?? "";
+      lightbox.classList.remove("hidden");
+      lightbox.classList.add("flex");
+      document.body.style.overflow = "hidden";
+    });
+  });
+
+  closeButton?.addEventListener("click", closeLightbox);
+  lightbox?.addEventListener("click", (event) => {
+    if (event.target === lightbox) closeLightbox();
+  });
+  document.addEventListener("keydown", (event) => {
+    if (event.key === "Escape") closeLightbox();
+  });
+</script>

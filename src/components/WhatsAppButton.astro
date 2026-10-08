@@ -1,0 +1,29 @@
+---
+import Icon from "./Icon.astro";
+import { site } from "../data/site";
+
+interface Props {
+  label?: string;
+  variant?: "whatsapp" | "leaf" | "outline" | "light";
+  class?: string;
+}
+
+const { label = "WhatsApp us", variant = "whatsapp", class: className = "" } = Astro.props;
+
+const variants = {
+  whatsapp: "bg-whatsapp text-forest-900 hover:bg-[#1fbe5a] shadow-lg shadow-whatsapp/25",
+  leaf: "bg-leaf-500 text-white hover:bg-leaf-600 shadow-lg shadow-leaf-600/25",
+  outline: "border border-forest-200 text-forest-900 hover:border-forest-400 hover:bg-forest-50",
+  light: "bg-white text-forest-900 hover:bg-sand-100",
+};
+---
+
+<a
+  href={site.whatsapp.link}
+  target="_blank"
+  rel="noopener noreferrer"
+  class={`inline-flex items-center justify-center gap-2.5 rounded-full px-6 py-3.5 text-sm font-semibold transition-all hover:-translate-y-0.5 ${variants[variant]} ${className}`}
+>
+  <Icon name="whatsapp" class="h-5 w-5" />
+  {label}
+</a>

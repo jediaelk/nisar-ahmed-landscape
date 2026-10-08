@@ -1,0 +1,90 @@
+---
+import { Image } from "astro:assets";
+import Icon from "./Icon.astro";
+import WhatsAppButton from "./WhatsAppButton.astro";
+import { whyUs } from "../data/site";
+import aboutImage from "../images/site/about.jpg";
+
+const stats = [
+  { value: "10+", label: "Years in Dubai" },
+  { value: "400+", label: "Gardens completed" },
+  { value: "100%", label: "In-house crews" },
+];
+---
+
+<section id="why-us" class="bg-sand-100 py-20 lg:py-28">
+  <div class="mx-auto max-w-7xl px-5 lg:px-8">
+    <div class="grid items-center gap-12 lg:grid-cols-2 lg:gap-16">
+      <div class="reveal relative">
+        <Image
+          src={aboutImage}
+          alt="A hardwood pergola built over a villa terrace in Dubai"
+          widths={[600, 900, 1200]}
+          sizes="(min-width: 1024px) 45vw, 92vw"
+          quality={80}
+          class="aspect-4/5 w-full rounded-3xl object-cover shadow-xl sm:aspect-square lg:aspect-4/5"
+        />
+        <!--
+          Floating quote card, anchored to the image on larger screens.
+          Needs `relative` so its background paints above the image it overlaps.
+        -->
+        <figure class="relative z-10 mx-4 -mt-16 rounded-2xl bg-white p-6 shadow-xl ring-1 ring-black/5 sm:mx-8 lg:absolute lg:bottom-6 lg:left-6 lg:mx-0 lg:mt-0 lg:max-w-[17rem]">
+          <blockquote class="text-sm leading-relaxed text-forest-800">
+            “Reliable, meticulous work. They made the whole renovation feel easy.”
+          </blockquote>
+          <figcaption class="mt-4 flex items-center gap-3">
+            <span class="grid h-9 w-9 place-items-center rounded-full bg-leaf-500/15 text-leaf-600">
+              <Icon name="leaf" class="h-5 w-5" />
+            </span>
+            <span class="text-xs leading-tight">
+              <span class="block font-semibold">Sophia Moore</span>
+              <span class="text-forest-600">Dubai Hills Estate</span>
+            </span>
+          </figcaption>
+        </figure>
+      </div>
+
+      <div class="reveal">
+        <p class="text-xs font-semibold tracking-[0.18em] text-leaf-500 uppercase">Why choose us</p>
+        <h2 class="mt-4 font-display text-3xl leading-tight font-semibold sm:text-4xl lg:text-[2.75rem]">
+          A local team that treats your garden like its own
+        </h2>
+        <p class="mt-5 text-base leading-relaxed text-forest-700">
+          Nisar Ahmed Landscape & Gardening is a small, hands-on outfit. You deal directly with the
+          person running the job, which means straight answers and work that gets finished properly.
+        </p>
+
+        <dl class="mt-9 space-y-6">
+          {
+            whyUs.map((reason) => (
+              <div class="flex gap-4">
+                <span class="mt-0.5 grid h-7 w-7 shrink-0 place-items-center rounded-full bg-leaf-500 text-white">
+                  <Icon name="check" class="h-4 w-4" />
+                </span>
+                <div>
+                  <dt class="font-display text-lg font-semibold">{reason.title}</dt>
+                  <dd class="mt-1.5 text-sm leading-relaxed text-forest-700">{reason.body}</dd>
+                </div>
+              </div>
+            ))
+          }
+        </dl>
+
+        <div class="mt-10 grid grid-cols-3 gap-4 border-t border-sand-200 pt-8">
+          {
+            stats.map((stat) => (
+              <div>
+                <p class="font-display text-3xl font-semibold text-leaf-600">{stat.value}</p>
+                <p class="mt-1 text-xs font-medium tracking-wide text-forest-600 uppercase">
+                  {stat.label}
+                </p>
+              </div>
+            ))
+          }
+        </div>
+
+        <WhatsAppButton label="Talk to Nisar" variant="leaf" class="mt-9" />
+      </div>
+    </div>
+  </div>
+</section>

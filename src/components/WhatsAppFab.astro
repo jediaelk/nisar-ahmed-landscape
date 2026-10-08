@@ -1,0 +1,16 @@
+---
+import Icon from "./Icon.astro";
+import { site } from "../data/site";
+---
+
+<!-- Always-visible WhatsApp shortcut. Expands to a label on hover. -->
+<a
+  href={site.whatsapp.link}
+  target="_blank"
+  rel="noopener noreferrer"
+  class="group fixed right-5 bottom-5 z-40 flex items-center gap-3 rounded-full bg-whatsapp py-4 pr-5 pl-4 font-semibold text-forest-900 shadow-2xl shadow-forest-900/25 transition-transform hover:scale-105 sm:right-7 sm:bottom-7"
+  aria-label={`Message ${site.shortName} on WhatsApp`}
+>
+  <Icon name="whatsapp" class="h-7 w-7" />
+  <span class="hidden text-sm sm:inline">WhatsApp us</span>
+</a>
