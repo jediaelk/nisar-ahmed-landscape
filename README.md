@@ -86,13 +86,25 @@ WhatsAppFab floating WhatsApp button, always visible
 
 ## Publishing it
 
-`npm run build` produces a plain static site in `dist/`. Upload that folder anywhere, or
-connect the repo to [Netlify](https://netlify.com), [Vercel](https://vercel.com) or
-Cloudflare Pages with:
+The site is live at **https://jediaelk.github.io/nisar-ahmed-landscape/**.
 
-- **Build command:** `npm run build`
-- **Publish directory:** `dist`
+Every push to `main` rebuilds and redeploys automatically via GitHub Actions
+([`.github/workflows/deploy.yml`](./.github/workflows/deploy.yml)). So adding a photo is just:
 
-Before going live, set the real domain in [`astro.config.mjs`](./astro.config.mjs) (the `site`
-field) and in [`public/robots.txt`](./public/robots.txt), so the sitemap and canonical URLs
-are correct.
+```bash
+cp ~/Desktop/new-job.jpg photos/07-paving--jumeirah-driveway.jpg
+git add photos && git commit -m "Add Jumeirah driveway photo" && git push
+```
+
+Give it about a minute, then refresh the live site.
+
+### Moving to a real domain
+
+When the business gets its own domain, in [`astro.config.mjs`](./astro.config.mjs):
+
+- set `site` to the domain, e.g. `https://nisarahmedlandscape.ae`
+- **delete the `base` line** (it only exists because GitHub Pages serves from a subfolder)
+
+Then update the sitemap URL in [`public/robots.txt`](./public/robots.txt) and point the domain
+at GitHub Pages (or move to Netlify/Vercel — build command `npm run build`, publish directory
+`dist`).

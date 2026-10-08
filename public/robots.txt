@@ -1,4 +1,4 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://nisarahmedlandscape.ae/sitemap-index.xml
+Sitemap: https://jediaelk.github.io/nisar-ahmed-landscape/sitemap-index.xml
